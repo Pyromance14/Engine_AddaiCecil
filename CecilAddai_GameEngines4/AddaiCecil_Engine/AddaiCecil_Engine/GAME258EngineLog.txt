@@ -1,0 +1,2 @@
+[INFO]: Creating StartScenein: StartScene.cpp on line: 13
+[INFO]: Everything worked in: CoreEngine.cpp on line: 37
