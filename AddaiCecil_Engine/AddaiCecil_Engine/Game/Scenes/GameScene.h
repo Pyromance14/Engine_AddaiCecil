@@ -2,7 +2,8 @@
 #define GAMESCENE_H
 
 #include "../../Engine/Core/CoreEngine.h"
-
+#include "../../Engine/Core/Timer.h"
+ 
 class GameScene : public Scene {
 public:
 	GameScene();
@@ -11,6 +12,9 @@ public:
 	bool OnCreate() override;
 	void Update(const float deltaTime_) override;
 	void Render() override;
+
+private:
+	GameObject* shape;
 
 };
 

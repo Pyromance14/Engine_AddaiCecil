@@ -2,7 +2,6 @@
 #define STARTSCENE_H
 
 #include "../../Engine/Core/CoreEngine.h"
-#include "../../Engine/Core/Timer.h"
 
 class StartScene : public Scene {
 public:
@@ -12,10 +11,6 @@ public:
 	bool OnCreate() override;
 	void Update(const float deltaTime_) override;
 	void Render() override;
-
-
-private:
-	GameObject* shape;
 };
 
 #endif // !STARTSCENE_H
