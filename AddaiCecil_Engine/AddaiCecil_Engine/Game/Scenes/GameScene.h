@@ -15,7 +15,7 @@ public:
 
 private:
 	GameObject* shape;
-
+	Model* model1;
 };
 
 #endif // !GAMESCENE_H

@@ -1,2 +1,12 @@
-﻿  GameScene.cpp
+﻿  Camera.cpp
+  CoreEngine.cpp
+  GameObject.cpp
+  GameScene.cpp
+  Game1.cpp
+  Main.cpp
+  Window.cpp
+  StartScene.cpp
+  Mesh.cpp
+  Model.cpp
+  Generating Code...
   AddaiCecil_Engine.vcxproj -> C:\Users\Owner\Desktop\CecilAddai_GameEngines4\AddaiCecil_Engine\Debug\AddaiCecil_Engine.exe
