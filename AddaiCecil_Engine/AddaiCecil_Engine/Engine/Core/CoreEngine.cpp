@@ -26,9 +26,19 @@ bool CoreEngine::OnCreate(std::string name_, int width_, int height_) {
 		return isRunning = false;
 	}
 
+	SDL_WarpMouseInWindow(window->GetWindow(),
+		window->GetWidth() / 2,
+		window->GetHeight() / 2);
+
+	MouseEventListener::RegisterEngineObject(this);
+
 	ShaderHandler::GetInstance()->CreateProgram("colourShader",
 		"Engine/Shaders/ColourVertexShader.glsl",
 		"Engine/Shaders/ColourFragmentShader.glsl");
+
+	ShaderHandler::GetInstance()->CreateProgram("basicShader",
+		"Engine/Shaders/VertexShader.glsl",
+		"Engine/Shaders/FragmentShader.glsl");
 
 	if (gameInterface) {
 		if (!gameInterface->OnCreate()) {
@@ -46,6 +56,7 @@ bool CoreEngine::OnCreate(std::string name_, int width_, int height_) {
 void CoreEngine::Run() {
 	while (isRunning) {
 		timer.UpdateFrameTicks();
+		EventListener::Update();
 		Update(timer.GetDeltaTime());
 		Render();
 		SDL_Delay(timer.GetSleepTime(fps));
@@ -95,10 +106,11 @@ void CoreEngine::SetCamera(Camera* camera_)
 	camera = camera_;
 }
 
+
+
 void CoreEngine::Update(const float deltaTime_) {
 	if (gameInterface) {
 		gameInterface->Update(deltaTime_);
-		std::cout << deltaTime_ << std::endl;
 	}
 }
 
@@ -113,6 +125,10 @@ void CoreEngine::Render() {
 
 void CoreEngine::OnDestroy() {
 	ShaderHandler::GetInstance()->OnDestroy();
+	TextureHandler::GetInstance()->OnDestroy();
+	MaterialHandler::GetInstance()->OnDestroy();
+	CollisionHandler::GetInstance()->OnDestroy();
+	SceneGraph::GetInstance()->OnDestroy();
 
 	delete gameInterface;
 	gameInterface = nullptr;
@@ -129,3 +145,25 @@ void CoreEngine::OnDestroy() {
 	exit(0);
 }
 
+void CoreEngine::NotifyOfMousePressed(glm::ivec2 mouse_, int buttonType_)
+{
+}
+
+void CoreEngine::NotifyOfMouseReleased(glm::ivec2 mouse_, int buttonType_)
+{
+	CollisionHandler::GetInstance()->MouseUpdate(mouse_, buttonType_);
+}
+
+void CoreEngine::NotifyOfMouseMove(glm::ivec2 mouse_)
+{
+	if (camera) {
+		camera->ProcessMouseMovement(MouseEventListener::GetMouseOffset());
+	}
+}
+
+void CoreEngine::NotifyOfMouseScroll(int y_)
+{
+	if (camera) {
+		camera->ProcessMouseZoom(y_);
+	}
+}

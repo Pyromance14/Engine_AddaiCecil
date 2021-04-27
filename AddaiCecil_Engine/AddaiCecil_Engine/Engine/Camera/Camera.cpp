@@ -29,6 +29,20 @@ Camera::Camera()
 
 Camera::~Camera()
 {
+	/*
+	if (lightSources)
+	delete lightSources;
+	lightSources = nullptr;
+	*/
+	if (lightSources.size() > 0) {
+		for (auto l : lightSources) {
+			delete l;
+			l = nullptr;
+		}
+
+		lightSources.clear();
+	}
+	
 }
 
 void Camera::SetPosition(glm::vec3 position_)
@@ -43,6 +57,14 @@ void Camera::SetRotation(float yaw_, float pitch_)
 	pitch = pitch_;
 	UpdateCameraVectors();
 }
+
+void Camera::AddLightSource(LightSource* lightSource_)
+{
+	lightSources.push_back(lightSource_);
+
+}
+
+
 
 glm::mat4 Camera::GetView() const
 {
@@ -64,6 +86,22 @@ glm::vec3 Camera::GetPosition() const
 	return position;
 }
 
+std::vector<LightSource*>Camera::GetLightSource() const
+{
+	return lightSources;
+}
+
+float Camera::GetNearPlane() const
+{
+	return nearPlane;
+}
+
+float Camera::GetFarPlane() const
+{
+	return farPlane;
+}
+
+
 void Camera::UpdateCameraVectors()
 {
 	forward.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
@@ -78,3 +116,34 @@ void Camera::UpdateCameraVectors()
 
 	view = glm::lookAt(position, position + forward, up);
 }
+void Camera::ProcessMouseMovement(glm::vec2 offset_)
+{
+	offset_ *= 0.05f;
+
+	yaw += offset_.x;
+	pitch += offset_.y;
+
+	if (pitch > 89.0f) {
+		pitch = 89.0f;
+	}
+	if (pitch < -89.0f) {
+		pitch = -89.0f;
+	}
+
+	if (yaw < 0.0f) {
+		yaw += 360.0f;
+	}
+	if (yaw > 360.0f) {
+		yaw -= 360.0f;
+	}
+	UpdateCameraVectors();
+}
+
+void Camera::ProcessMouseZoom(int y_)
+{
+	if (y_ < 0 || y_ > 0) {
+		position += static_cast<float>(y_) * (forward * 2.0f);
+	}
+	UpdateCameraVectors();
+}
+

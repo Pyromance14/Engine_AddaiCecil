@@ -2,7 +2,6 @@
 #define GAMESCENE_H
 
 #include "../../Engine/Core/CoreEngine.h"
-#include "../../Engine/Core/Timer.h"
  
 class GameScene : public Scene {
 public:
@@ -14,8 +13,7 @@ public:
 	void Render() override;
 
 private:
-	GameObject* shape;
-	Model* model1;
+
 };
 
 #endif // !GAMESCENE_H

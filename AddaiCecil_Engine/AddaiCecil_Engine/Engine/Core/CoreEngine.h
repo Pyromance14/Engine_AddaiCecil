@@ -8,11 +8,16 @@
 #include "GameInterface.h"
 #include "Scene.h"
 
+#include "../Rendering/SceneGraph.h"
 #include "../Rendering/3D/GameObject.h"
 
 #include"../Graphics/ShaderHandler.h"
+#include"../Graphics/TextureHandler.h"
+#include "../Graphics/MaterialHandler.h"
 
 #include "../Camera/Camera.h"
+
+#include "../Events/EventListener.h"
 
 class CoreEngine{
 public:
@@ -38,6 +43,10 @@ public:
 	void SetCurrentScene(int sceneNum_);
 	void SetCamera(Camera* camera_);
 
+	void NotifyOfMousePressed(glm::ivec2 mouse_, int buttonType_);
+	void NotifyOfMouseReleased(glm::ivec2 mouse_, int buttonType_);
+	void NotifyOfMouseMove(glm::ivec2 mouse_);
+	void NotifyOfMouseScroll(int y_);
 private:
 	CoreEngine();
 	~CoreEngine();
